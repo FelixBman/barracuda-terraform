@@ -38,5 +38,5 @@ resource "azurerm_vpn_gateway" "example" {
   name                = "example-vpng"
   location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
-  virtual_hub_id      = azurerm_resource_group.resourcegroup.id
+  virtual_hub_id      = azurerm_virtual_hub.examples.id
 }
