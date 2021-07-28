@@ -22,21 +22,21 @@ resource "azurerm_resource_group" "resourcegroup" {
     }
 }
   
-resource "azurerm_virtual_wan" "fbu-terratest-vwan" {
+resource "azurerm_virtual_wan" "terra-virtual-wan" {
   name                = "${var.prefix}-vwan"
   resource_group_name = azurerm_resource_group.resourcegroup.name
   location            = azurerm_resource_group.resourcegroup.location
 }
-resource "azurerm_virtual_hub" "examples" {
-  name                = "terraform-virtualhub"
+resource "azurerm_virtual_hub" "terra-HUB" {
+  name                = "${var.prefix}-virtualhub"
   resource_group_name = azurerm_resource_group.resourcegroup.name
   location            = azurerm_resource_group.resourcegroup.location
-  virtual_wan_id      = azurerm_virtual_wan.fbu-terratest-vwan.id
+  virtual_wan_id      = azurerm_virtual_wan.terra-virtual-wan.id
   address_prefix      = var.address_prefix
 }
-resource "azurerm_vpn_gateway" "example" {
-  name                = "example-vpng"
+resource "azurerm_vpn_gateway" "VPNG" {
+  name                = "${var.prefix}-vpng"
   location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
-  virtual_hub_id      = azurerm_virtual_hub.examples.id
+  virtual_hub_id      = azurerm_virtual_hub.terra-HUB.id
 }
