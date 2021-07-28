@@ -1,1 +1,1 @@
-# barracuda-terraform
+# Terraform scripts to manage Barracuda CloudGen Firewall and CloudGen WAN
