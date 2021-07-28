@@ -6,5 +6,5 @@ variable "prefix" {
       default = "fbu-cgf-devops"
 }
 variable "address_prefix" {
-  default = "10.0.0.0/23"
+  default = "10.1.0.0/24"
 }
