@@ -32,7 +32,7 @@ resource "azurerm_subnet" "subnet2" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   address_prefixes       = ["${var.subnet_protected}"]
  }
- 
+
 resource "azurerm_subnet_route_table_association" "protected-default" {
   subnet_id      = azurerm_subnet.subnet2.id
   route_table_id = azurerm_route_table.defaultroute.id
@@ -80,7 +80,7 @@ resource "azurerm_network_security_rule" "csg_nsg_allowallout" {
   destination_address_prefix  = "*"
 }
 
-resource "azurerm_network_security_rule" "csg_nsg_allowallssh" {
+resource "azurerm_network_security_rule" "csg_nsg_allowallin" {
   name                        = "Allow-SSH-Inbound"
   resource_group_name         = "${azurerm_resource_group.cgf-rg.name}"
   network_security_group_name = "${azurerm_network_security_group.cgf_nsg.name}"
@@ -90,7 +90,7 @@ resource "azurerm_network_security_rule" "csg_nsg_allowallssh" {
   protocol                    = "*"
   source_port_range           = "*"
   destination_port_range      = "*"
-  source_address_prefix       = "94.79.184.0/24"
+  source_address_prefix       = "*"
   destination_address_prefix  = "*"
 }
 

@@ -45,6 +45,6 @@ variable "cgf_vmsize" {
     default     = "Standard_DS1_v2"
 }
 variable "password" { 
-    description = "The password for the Barracuda VM to use"
+    description = "The password for the Barracuda CloudGen Firewall to use"
 }
 
