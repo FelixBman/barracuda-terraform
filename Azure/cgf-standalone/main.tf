@@ -23,17 +23,22 @@ resource "azurerm_subnet" "subnet1" {
   name                 = "${var.prefix}-SUBNET-CGF"
   resource_group_name  = "${azurerm_resource_group.cgf-rg.name}"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  address_prefix       = "${var.subnet_cgf}"
+  address_prefixes       = ["${var.subnet_cgf}"]
 }
 
 resource "azurerm_subnet" "subnet2" {
   name                 = "${var.prefix}-SUBNET-Protected"
   resource_group_name  = "${azurerm_resource_group.cgf-rg.name}"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  address_prefix       = "${var.subnet_protected}"
-  #route_table_id       = "${azurerm_route_table.frontendroute.id}"
+  address_prefixes       = ["${var.subnet_protected}"]
+ }
+ 
+resource "azurerm_subnet_route_table_association" "protected-default" {
+  subnet_id      = azurerm_subnet.subnet2.id
+  route_table_id = azurerm_route_table.defaultroute.id
 }
 
+#######VM
 resource "azurerm_public_ip" "cgf-pip" {
   name                         = "${var.prefix}-VM-NGF-PIP"
   location                     = "${var.location}"
@@ -84,15 +89,25 @@ resource "azurerm_network_security_rule" "csg_nsg_allowallssh" {
   access                      = "Allow"
   protocol                    = "*"
   source_port_range           = "*"
-  destination_port_range      = "22"
+  destination_port_range      = "*"
   source_address_prefix       = "94.79.184.0/24"
   destination_address_prefix  = "*"
 }
 
+resource "azurerm_route_table" "defaultroute" {
+  name                = "${var.prefix}-RT-DEFAULT"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.cgf-rg.name}"
 
-
-resource "azurerm_virtual_machine" "ngfvm" {
-  name                  = "${var.prefix}-VM-NGF"
+  route {
+    name                = "${var.prefix}-protected-to-internet"
+    address_prefix          = "0.0.0.0/0"
+    next_hop_type           = "VirtualAppliance"
+    next_hop_in_ip_address  = "${var.cgf_ipaddress}"
+  }
+}
+resource "azurerm_virtual_machine" "cgf-vm" {
+  name                  = "${var.prefix}-VM-CGF"
   location              = "${azurerm_resource_group.cgf-rg.location}"
   resource_group_name   = "${azurerm_resource_group.cgf-rg.name}"
   network_interface_ids = ["${azurerm_network_interface.cgf-ifc.id}"]

@@ -1,5 +1,4 @@
-# Virtual WAN including 1 hub
+# Barracuda CloudGen Firewall
 
-This script will setup a resource group, a virtual WAN and in there a HUB.
-The Location, Names and the HUB IP-Range will be defined in the variables.tf file.
+This Terraform Script will deploy the latest version of a CloudGen Firewall, 
 
