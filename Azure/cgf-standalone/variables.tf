@@ -36,7 +36,7 @@ variable "cgf_defaultgateway" {
 
 
 variable "cgf_imagesku" {
-    description = "SKU Hourly (PAYG) or Bring your own license (BYOL)"
+    description = "SKU Hourly (hourly) or Bring your own license (byol)"
     default     = "byol"
 }
 
